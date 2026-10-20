@@ -1,0 +1,16 @@
+replicaCount: 1
+image: registry.example.invalid/healthcare-ai-factory-api:unreleased
+triton:
+  enabled: false
+  replicas: 0
+  image: nvcr.io/nvidia/tritonserver:24.12-py3
+nim:
+  enabled: false
+gpuQuota: "1"
+resources:
+  requests:
+    cpu: "500m"
+    memory: 1Gi
+  limits:
+    cpu: "2"
+    memory: 2Gi

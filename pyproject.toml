@@ -1,0 +1,32 @@
+[project]
+name = "healthcare-ai-factory-platform"
+version = "0.1.0"
+description = "Production-oriented healthcare AI factory reference implementation using synthetic data."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+authors = [{ name = "Jatinder Singh" }]
+dependencies = [
+  "numpy",
+  "pydicom",
+  "monai",
+  "fastapi",
+  "uvicorn",
+  "httpx",
+  "python-multipart",
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "pyyaml"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+pythonpath = ["src"]

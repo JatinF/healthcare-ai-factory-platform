@@ -1,0 +1,26 @@
+name: "phantom-detector"
+backend: "python"
+max_batch_size: 8
+
+input [
+  {
+    name: "INPUT"
+    data_type: TYPE_FP32
+    dims: [ 1, 64, 64 ]
+  }
+]
+
+output [
+  {
+    name: "PROBABILITY"
+    data_type: TYPE_FP32
+    dims: [ 1 ]
+  }
+]
+
+instance_group [
+  {
+    kind: KIND_GPU
+    count: 1
+  }
+]

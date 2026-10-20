@@ -1,0 +1,47 @@
+# Applied only when a cluster acceptance window sets replicas above zero.
+# The default is zero so this file does not request a GPU by being present.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: triton
+  namespace: clinical-inference
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: triton
+  template:
+    metadata:
+      labels:
+        app: triton
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: triton
+          image: nvcr.io/nvidia/tritonserver:24.12-py3
+          args: ["tritonserver", "--model-repository=/models"]
+          ports:
+            - name: http
+              containerPort: 8000
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+          resources:
+            requests:
+              cpu: "2"
+              memory: 8Gi
+              nvidia.com/gpu: "1"
+            limits:
+              cpu: "4"
+              memory: 16Gi
+              nvidia.com/gpu: "1"
+          volumeMounts:
+            - name: models
+              mountPath: /models
+              readOnly: true
+      volumes:
+        - name: models
+          emptyDir: {}

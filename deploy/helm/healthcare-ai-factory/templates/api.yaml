@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: inference-api
+  namespace: clinical-inference
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: inference-api
+  template:
+    metadata:
+      labels:
+        app: inference-api
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: api
+          image: {{ .Values.image | quote }}
+          ports:
+            - name: http
+              containerPort: 8080
+          env:
+            - name: HAF_TRITON_URL
+              value: ""
+          securityContext:
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+{{- if .Values.triton.enabled }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: triton
+  namespace: clinical-inference
+spec:
+  replicas: {{ .Values.triton.replicas }}
+  selector:
+    matchLabels:
+      app: triton
+  template:
+    metadata:
+      labels:
+        app: triton
+    spec:
+      containers:
+        - name: triton
+          image: {{ .Values.triton.image | quote }}
+          args: ["tritonserver", "--model-repository=/models"]
+          resources:
+            requests:
+              nvidia.com/gpu: {{ .Values.gpuQuota | quote }}
+{{- end }}

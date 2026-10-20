@@ -1,0 +1,21 @@
+{
+  "evidence_class": "EXAMPLE",
+  "patient_records": 0,
+  "notes": [
+    {
+      "id": "SYN-NOTE-001",
+      "title": "Synthetic phantom protocol",
+      "text": "The synthetic study uses a geometric sphere phantom. It is not a patient study. Inference returns phantom-present when the bright fraction crosses the fixture threshold."
+    },
+    {
+      "id": "SYN-NOTE-002",
+      "title": "Export rule",
+      "text": "Export to an external record system is a high-risk action. A named approver must record an approval id before the API accepts the export. The reader role cannot approve."
+    },
+    {
+      "id": "SYN-NOTE-003",
+      "title": "De-identification rule",
+      "text": "The de-identification rule accepts the name SYNTHETIC. A study identifier must start with SYN-. An accession number, a birth date, or any other identifier fails the gate."
+    }
+  ]
+}

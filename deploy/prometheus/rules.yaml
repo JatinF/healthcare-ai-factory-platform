@@ -1,0 +1,25 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: healthcare-ai-factory
+  namespace: clinical-inference
+spec:
+  groups:
+    - name: healthcare-ai-factory
+      rules:
+        - alert: InferenceApiDown
+          expr: up{job="healthcare-inference-api"} == 0
+          for: 5m
+          labels:
+            severity: page
+          annotations:
+            summary: The inference API has been down for 5 minutes.
+            runbook: docs/runbooks/inference-down.md
+        - alert: InferenceBackendErrors
+          expr: sum(rate(hafactory_inference_requests_total[5m])) == 0 and on() up{job="healthcare-inference-api"} == 1
+          for: 30m
+          labels:
+            severity: ticket
+          annotations:
+            summary: The API is up and has taken no inference traffic for 30 minutes during a staffed window.
+            runbook: docs/runbooks/inference-down.md
