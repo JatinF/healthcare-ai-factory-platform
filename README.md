@@ -51,7 +51,7 @@ python -m pip install -e ".[dev]"
 python -m pytest
 ```
 
-Pytest runs the imaging pipeline, the API, the assistant, the local load record, manifest parsing, and a check that the committed dashboard and acceptance report match the generators. The job in [`.github/workflows/check.yml`](.github/workflows/check.yml) installs the same extra and runs pytest on Ubuntu with Python 3.12. That job does not start Triton and does not attach a GPU.
+Pytest runs the imaging pipeline, the API, the assistant, the local load record, manifest parsing, and a check that the committed dashboard and acceptance report match the generators. The job in [`.github/workflows/check.yml`](.github/workflows/check.yml) installs the same extra and runs pytest on Ubuntu 24.04 with Python 3.12. That job does not start Triton and does not attach a GPU.
 
 Print one local load record:
 
